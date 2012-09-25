@@ -1,8 +1,5 @@
 package de.uvwxy.packsock;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-
 public class Packet {
 	private PacketType t;
 

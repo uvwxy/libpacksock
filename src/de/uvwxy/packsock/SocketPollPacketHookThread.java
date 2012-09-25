@@ -21,14 +21,13 @@ public class SocketPollPacketHookThread implements Runnable {
 			try {
 				temp = socket.tryReadSocketForPacket();
 			} catch (Exception e) {
+				// ioexception if socket closed, or other io error -> socket is broken thus stop polling
 				running = false;
 				System.out.println("Error reading socket, stopping monitor (" + e.getLocalizedMessage() + ")");
 			}
 
-			if (temp != null) {
-				if (hook != null) {
-					hook.onMessageReceived(temp);
-				}
+			if (temp != null && hook != null) {
+				hook.onMessageReceived(temp);
 			}
 		}
 	}

@@ -1,8 +1,5 @@
 package de.uvwxy.packsock;
 
-import java.io.IOException;
-import java.net.InetAddress;
-
 import de.uvwxy.packsock.chat.ChatClient;
 import de.uvwxy.packsock.chat.ChatMessage;
 import de.uvwxy.packsock.chat.IChatMessageHook;
@@ -69,11 +66,11 @@ public class Main {
 		ChatMessage m1 = new ChatMessage("client1", "fancy text");
 		ChatMessage m2 = new ChatMessage("client2", "fancy text");
 
-		client0.disconnect();
+//		client0.disconnect();
 		
 		log("Sending Messages");
 		
-//		client0.sendMessage(m0);
+		client0.sendMessage(m0);
 		client1.sendMessage(m1);
 		client2.sendMessage(m2);
 		
@@ -81,7 +78,7 @@ public class Main {
 		
 		server.stop();
 		
-//		client0.disconnect();
+		client0.disconnect();
 		client1.disconnect();
 		client2.disconnect();
 	}
@@ -90,6 +87,7 @@ public class Main {
 		System.out.println(s);
 	}
 
+	@SuppressWarnings("unused")
 	private static void oldTests() throws Exception {
 		ChatMessage msg = new ChatMessage("Paul", "Hello World");
 

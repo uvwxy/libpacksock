@@ -51,6 +51,7 @@ public class PackSock {
 				try{
 				serverSocket = serverListener.accept();
 				} catch (SocketException se){
+					// TODO: has been killed by serverListener.close() or other reason
 					return;
 				}
 				sock_in = new BufferedInputStream(serverSocket.getInputStream());
@@ -58,7 +59,7 @@ public class PackSock {
 				if (hook!=null)
 					hook.onServerAcceptedConnection();
 			} catch (IOException e) {
-				System.out.println("listen exception?");
+				System.out.println("Socket input/output stream broken..");
 				e.printStackTrace();
 			} 
 		}
