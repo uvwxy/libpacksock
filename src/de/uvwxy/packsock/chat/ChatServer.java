@@ -5,18 +5,18 @@ import java.net.SocketException;
 import java.util.LinkedList;
 
 import de.uvwxy.packsock.PackSock;
-import de.uvwxy.packsock.PackSockMonitor;
+import de.uvwxy.packsock.SocketPollPacketHookThread;
 import de.uvwxy.packsock.Packet;
-import de.uvwxy.packsock.PacketHook;
-import de.uvwxy.packsock.ServerConnectedHook;
+import de.uvwxy.packsock.IPacketHook;
+import de.uvwxy.packsock.IServerConnectedHook;
 
-public class ChatServer implements ServerConnectedHook, PacketHook {
+public class ChatServer implements IServerConnectedHook, IPacketHook {
 	int port;
 	int maxConnectionCount;
 	String ServerName;
 	PackSock currentListener = null;
 	LinkedList<PackSock> sockets = new LinkedList<PackSock>();
-	LinkedList<PackSockMonitor> monitors = new LinkedList<PackSockMonitor>();
+	LinkedList<SocketPollPacketHookThread> monitors = new LinkedList<SocketPollPacketHookThread>();
 
 	boolean no_further_listener = false;
 
@@ -49,7 +49,7 @@ public class ChatServer implements ServerConnectedHook, PacketHook {
 	@Override
 	public void onServerAcceptedConnection() {
 		System.out.println("Listening");
-		PackSockMonitor m = new PackSockMonitor(currentListener, this);
+		SocketPollPacketHookThread m = new SocketPollPacketHookThread(currentListener, this);
 		Thread t = new Thread(m);
 		t.start();
 		monitors.add(m);
@@ -88,7 +88,7 @@ public class ChatServer implements ServerConnectedHook, PacketHook {
 	}
 
 	public void stop() throws IOException {
-		for (PackSockMonitor m : monitors) {
+		for (SocketPollPacketHookThread m : monitors) {
 			if (m != null)
 				m.cancelPolling();
 		}

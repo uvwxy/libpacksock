@@ -5,7 +5,7 @@ import java.net.InetAddress;
 
 import de.uvwxy.packsock.chat.ChatClient;
 import de.uvwxy.packsock.chat.ChatMessage;
-import de.uvwxy.packsock.chat.ChatMessageHook;
+import de.uvwxy.packsock.chat.IChatMessageHook;
 import de.uvwxy.packsock.chat.ChatServer;
 
 /**
@@ -17,7 +17,7 @@ import de.uvwxy.packsock.chat.ChatServer;
  */
 public class Main {
 
-	public static ChatMessageHook cmh0 = new ChatMessageHook() {
+	public static IChatMessageHook cmh0 = new IChatMessageHook() {
 
 		@Override
 		public void onMessageReceived(ChatMessage msg) {
@@ -25,7 +25,7 @@ public class Main {
 		}
 	};
 
-	public static ChatMessageHook cmh1 = new ChatMessageHook() {
+	public static IChatMessageHook cmh1 = new IChatMessageHook() {
 
 		@Override
 		public void onMessageReceived(ChatMessage msg) {
@@ -33,7 +33,7 @@ public class Main {
 		}
 	};
 
-	public static ChatMessageHook cmh2 = new ChatMessageHook() {
+	public static IChatMessageHook cmh2 = new IChatMessageHook() {
 
 		@Override
 		public void onMessageReceived(ChatMessage msg) {

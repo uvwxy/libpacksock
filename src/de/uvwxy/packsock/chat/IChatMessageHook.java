@@ -1,5 +1,5 @@
 package de.uvwxy.packsock.chat;
 
-public interface ChatMessageHook {
+public interface IChatMessageHook {
 	public void onMessageReceived(ChatMessage msg);
 }

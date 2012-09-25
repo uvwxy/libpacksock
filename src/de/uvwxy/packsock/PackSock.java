@@ -42,7 +42,7 @@ public class PackSock {
 	private BufferedInputStream sock_in;
 	private BufferedOutputStream sock_out;
 	private Packet bufferedPacket = null;
-	private ServerConnectedHook hook = null;
+	private IServerConnectedHook hook = null;
 	
 	private class ListenThread implements Runnable {
 		@Override
@@ -71,7 +71,7 @@ public class PackSock {
 	 * @param port
 	 * @throws IOException
 	 */
-	public PackSock(int port, ServerConnectedHook hook) throws IOException {
+	public PackSock(int port, IServerConnectedHook hook) throws IOException {
 		isServer = true;
 		this.hook = hook;
 		if (serverListener == null) {

@@ -1,5 +1,5 @@
 package de.uvwxy.packsock;
 
-public interface PacketHook {
+public interface IPacketHook {
 	public void onMessageReceived(Packet p);
 }

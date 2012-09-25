@@ -3,9 +3,9 @@ package de.uvwxy.packsock.chat;
 import java.nio.ByteBuffer;
 
 import de.uvwxy.packsock.BytesConverter;
-import de.uvwxy.packsock.PackSockMessage;
+import de.uvwxy.packsock.IPackSockMessage;
 
-public class ChatMessage implements PackSockMessage {
+public class ChatMessage implements IPackSockMessage {
 	private long timestamp;
 	private String sender;
 	private String msg;

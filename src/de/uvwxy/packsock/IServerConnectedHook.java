@@ -1,5 +1,5 @@
 package de.uvwxy.packsock;
 
-public interface ServerConnectedHook {
+public interface IServerConnectedHook {
 	public void onServerAcceptedConnection();
 }

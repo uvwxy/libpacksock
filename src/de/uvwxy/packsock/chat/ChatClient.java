@@ -3,18 +3,18 @@ package de.uvwxy.packsock.chat;
 import java.io.IOException;
 
 import de.uvwxy.packsock.PackSock;
-import de.uvwxy.packsock.PackSockMonitor;
+import de.uvwxy.packsock.SocketPollPacketHookThread;
 import de.uvwxy.packsock.Packet;
-import de.uvwxy.packsock.PacketHook;
+import de.uvwxy.packsock.IPacketHook;
 import de.uvwxy.packsock.PacketType;
 
-public class ChatClient implements PacketHook {
-	ChatMessageHook msgHook;
+public class ChatClient implements IPacketHook {
+	IChatMessageHook msgHook;
 
 	PackSock socket = null;
-	PackSockMonitor monitor = null;
+	SocketPollPacketHookThread monitor = null;
 
-	public ChatClient(int port, String address, ChatMessageHook msgHook) {
+	public ChatClient(int port, String address, IChatMessageHook msgHook) {
 		socket = new PackSock(address, port);
 		this.msgHook = msgHook;
 	}
@@ -22,7 +22,7 @@ public class ChatClient implements PacketHook {
 	public void connect() throws Exception {
 		System.out.println("Starting connection");
 		socket.connect();
-		monitor = new PackSockMonitor(socket, this);
+		monitor = new SocketPollPacketHookThread(socket, this);
 		new Thread(monitor).start();
 	}
 

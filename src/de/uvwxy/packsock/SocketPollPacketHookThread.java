@@ -1,11 +1,11 @@
 package de.uvwxy.packsock;
 
-public class PackSockMonitor implements Runnable {
+public class SocketPollPacketHookThread implements Runnable {
 	private PackSock socket;
-	private PacketHook hook;
+	private IPacketHook hook;
 	private boolean running = true;
 
-	public PackSockMonitor(PackSock socket, PacketHook hook) {
+	public SocketPollPacketHookThread(PackSock socket, IPacketHook hook) {
 		this.socket = socket;
 		this.hook = hook;
 	}
