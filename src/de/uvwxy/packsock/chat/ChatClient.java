@@ -9,7 +9,7 @@ import de.uvwxy.packsock.IPacketHook;
 import de.uvwxy.packsock.PacketType;
 
 public class ChatClient implements IPacketHook {
-	IChatMessageHook msgHook;
+	protected IChatMessageHook msgHook;
 
 	PackSock socket = null;
 	SocketPollPacketHookThread monitor = null;
