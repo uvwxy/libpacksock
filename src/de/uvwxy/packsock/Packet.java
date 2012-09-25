@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 public class Packet {
-	private static final String CHARSET = "UTF-8";
 	private PacketType t;
 
 	private byte[] payload;
@@ -14,23 +13,23 @@ public class Packet {
 	}
 
 	public Packet(byte b, String msg) {
-		PacketType x = PacketType.BINARY;
-		x.setType(b);
-		this.t = x;
-		this.payload = string2bytes(msg);
+		this.t = new PacketType(b);
+		this.payload = BytesConverter.string2bytes(msg);
 	}
 
 	public Packet(PacketType t, String msg) {
 		this.t = t;
-		this.payload = string2bytes(msg);
+		this.payload = BytesConverter.string2bytes(msg);
 	}
-
-	private byte[] string2bytes(String s) {
-		return s.getBytes(Charset.forName(CHARSET));
+	
+	public Packet(PacketType t, byte[] bytes) {
+		this.t = t;
+		this.payload = bytes;
 	}
-
-	private String bytes2string(byte[] b) {
-		return new String(b, Charset.forName(CHARSET));
+	
+	public Packet(byte t, byte[] bytes) {
+		this.t = new PacketType(t);
+		this.payload = bytes;
 	}
 
 	/**
@@ -48,7 +47,7 @@ public class Packet {
 	 * @param payload
 	 */
 	public void setPayloadAsString(String payload) {
-		this.payload = string2bytes(payload);
+		this.payload = BytesConverter.string2bytes(payload);
 	}
 
 	/**
@@ -67,10 +66,7 @@ public class Packet {
 	 */
 	public void setT(byte b) {
 		if (t == null) {
-			PacketType x = PacketType.BINARY;
-			x.setType(b);
-			this.t = x;
-			t = x;
+			this.t = new PacketType(b);
 		} else
 			t.setType(b);
 	}
@@ -116,7 +112,7 @@ public class Packet {
 	 * @return
 	 */
 	public String getPayloadAsString() {
-		return bytes2string(payload);
+		return BytesConverter.bytes2string(payload);
 	}
 
 	/**
@@ -129,7 +125,7 @@ public class Packet {
 			return null;
 		}
 
-		return ByteBuffer.allocate(4).putInt(payload.length).array();
+		return BytesConverter.int2bytes(payload.length);
 	}
 
 	/**

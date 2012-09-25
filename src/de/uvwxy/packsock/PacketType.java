@@ -1,11 +1,12 @@
 package de.uvwxy.packsock;
 
-public enum PacketType {
-	STRING(0),BINARY(1);
+public class PacketType {
 	
-//	public static final byte STRING = 0;
-//	public static final byte BINARY = 1;
-//	
+	
+	public static final byte STRING = 0;
+	public static final byte BINARY = 1;
+	public static final byte CHAT_MESSAGE = 2;
+	
 	private byte value;
 
 	PacketType(byte value) {

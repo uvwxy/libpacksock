@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
 /**
- * A class to simplify the transmission of binary data or strings with a tiny packet header.
- * Its payload size is limited by BUFFER_SIZE.
+ * A class to simplify the transmission of binary data or strings with a tiny packet header. Its payload size is limited
+ * by BUFFER_SIZE.
  * 
  * @author Paul Smith code@uvwxy.de
  * 
@@ -41,17 +42,25 @@ public class PackSock {
 	private BufferedInputStream sock_in;
 	private BufferedOutputStream sock_out;
 	private Packet bufferedPacket = null;
-
+	private ServerConnectedHook hook = null;
+	
 	private class ListenThread implements Runnable {
 		@Override
 		public void run() {
 			try {
+				try{
 				serverSocket = serverListener.accept();
+				} catch (SocketException se){
+					return;
+				}
 				sock_in = new BufferedInputStream(serverSocket.getInputStream());
 				sock_out = new BufferedOutputStream(serverSocket.getOutputStream());
+				if (hook!=null)
+					hook.onServerAcceptedConnection();
 			} catch (IOException e) {
+				System.out.println("listen exception?");
 				e.printStackTrace();
-			}
+			} 
 		}
 
 	}
@@ -62,9 +71,9 @@ public class PackSock {
 	 * @param port
 	 * @throws IOException
 	 */
-	public PackSock(int port) throws IOException {
+	public PackSock(int port, ServerConnectedHook hook) throws IOException {
 		isServer = true;
-
+		this.hook = hook;
 		if (serverListener == null) {
 			serverListener = new ServerSocket(port);
 			this.connectionPort = port;
@@ -134,7 +143,7 @@ public class PackSock {
 	 *            the <code>Packet</code> to send. <code>null</code> is not sent.
 	 * @throws IOException
 	 */
-	public void sendPacket(Packet p) throws IOException {
+	public void sendPacket(Packet p) throws IOException, SocketException {
 		if (p == null || sock_out == null) {
 			// should throw exception here!
 			return;
@@ -170,7 +179,7 @@ public class PackSock {
 	 * 
 	 * @throws IOException
 	 */
-	public Packet tryReadSocketForPacket() throws IOException {
+	public Packet tryReadSocketForPacket() throws IOException, SocketException {
 		if (sock_in == null) {
 			return null;
 		}
@@ -185,6 +194,7 @@ public class PackSock {
 		case READ_NOTHING:
 			bufferedPacket = new Packet();
 		case READING_SIZE:
+			
 			// read maximal 4 bytes of size field
 			bytes_read_size += sock_in.read(buffer, buffer_pointer, BYTES_TO_READ_FOR_SIZE - bytes_read_size);
 			buffer_pointer += bytes_read_size;
@@ -259,6 +269,14 @@ public class PackSock {
 
 	public String getHostName() throws UnknownHostException {
 		return InetAddress.getLocalHost().getHostName();
+	}
+
+	public void stopListen() throws IOException {
+		serverListener.close();
+	}
+	
+	public void disconnect() throws IOException{
+		clientSocket.close();
 	}
 
 }
