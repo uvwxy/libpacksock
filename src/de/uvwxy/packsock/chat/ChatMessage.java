@@ -23,6 +23,14 @@ public class ChatMessage implements IPackSockMessage {
 	public ChatMessage(byte[] data) {
 		setByteArrayData(data);
 	}
+	
+	public String getSender(){
+		return sender;
+	}
+	
+	public String getMessage(){
+		return msg;
+	}
 
 	@Override
 	public byte[] getByteArrayData() {
