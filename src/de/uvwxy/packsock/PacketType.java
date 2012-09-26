@@ -6,7 +6,7 @@ public class PacketType {
 	public static final byte STRING = 0;
 	public static final byte BINARY = 1;
 	public static final byte CHAT_MESSAGE = 2;
-	public static final byte GAME_DATA = 3;
+	public static final byte GAME_MESSAGE = 3;
 	
 	private byte value;
 
