@@ -9,8 +9,6 @@ import de.uvwxy.packsock.chat.IChatMessageHook;
 public class GameClient extends ChatClient {
 	IGameMessageHook gameHook;
 
-	long id = System.currentTimeMillis();
-
 	public GameClient(int port, String address, IChatMessageHook msgHook, IGameMessageHook gameHook) {
 		super(port, address, msgHook);
 		this.gameHook = gameHook;
