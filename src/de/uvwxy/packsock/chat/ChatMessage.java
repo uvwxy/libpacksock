@@ -77,4 +77,8 @@ public class ChatMessage implements IPackSockMessage {
 		return "" + timestamp + ": " + sender + ": " + msg;
 	}
 
+	public long getTimestamp() {
+		return timestamp;
+	}
+
 }
