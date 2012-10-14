@@ -43,25 +43,27 @@ public class PackSock {
 	private BufferedOutputStream sock_out;
 	private Packet bufferedPacket = null;
 	private IServerConnectedHook hook = null;
-	
+
+	private long socketID = System.currentTimeMillis();
+
 	private class ListenThread implements Runnable {
 		@Override
 		public void run() {
 			try {
-				try{
-				serverSocket = serverListener.accept();
-				} catch (SocketException se){
+				try {
+					serverSocket = serverListener.accept();
+				} catch (SocketException se) {
 					// TODO: has been killed by serverListener.close() or other reason
 					return;
 				}
 				sock_in = new BufferedInputStream(serverSocket.getInputStream());
 				sock_out = new BufferedOutputStream(serverSocket.getOutputStream());
-				if (hook!=null)
+				if (hook != null)
 					hook.onServerAcceptedConnection();
 			} catch (IOException e) {
 				System.out.println("Socket input/output stream broken..");
 				e.printStackTrace();
-			} 
+			}
 		}
 
 	}
@@ -195,7 +197,7 @@ public class PackSock {
 		case READ_NOTHING:
 			bufferedPacket = new Packet();
 		case READING_SIZE:
-			
+
 			// read maximal 4 bytes of size field
 			bytes_read_size += sock_in.read(buffer, buffer_pointer, BYTES_TO_READ_FOR_SIZE - bytes_read_size);
 			buffer_pointer += bytes_read_size;
@@ -275,9 +277,17 @@ public class PackSock {
 	public void stopListen() throws IOException {
 		serverListener.close();
 	}
-	
-	public void disconnect() throws IOException{
+
+	public void disconnect() throws IOException {
 		clientSocket.close();
+	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 instanceof PackSock)
+			return socketID == ((PackSock) arg0).socketID;
+		else
+			return false;
 	}
 
 }

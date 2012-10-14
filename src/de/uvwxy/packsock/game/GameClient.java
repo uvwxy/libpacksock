@@ -1,5 +1,6 @@
 package de.uvwxy.packsock.game;
 
+import de.uvwxy.packsock.PackSock;
 import de.uvwxy.packsock.Packet;
 import de.uvwxy.packsock.PacketType;
 import de.uvwxy.packsock.chat.ChatClient;
@@ -15,7 +16,7 @@ public class GameClient extends ChatClient {
 	}
 
 	@Override
-	public void onMessageReceived(Packet p) {
+	public void onMessageReceived(Packet p, PackSock inSocket) {
 		if (p == null) {
 			return;
 		}
@@ -24,12 +25,12 @@ public class GameClient extends ChatClient {
 		case PacketType.CHAT_MESSAGE:
 			ChatMessage m = new ChatMessage(p.getPayloadAsBytes());
 			if (msgHook != null)
-				msgHook.onMessageReceived(m);
+				msgHook.onMessageReceived(m, inSocket);
 			break;
 		case PacketType.GAME_MESSAGE:
 			GameMessage m1 = new GameMessage(p.getPayloadAsBytes());
 			if (gameHook != null)
-				gameHook.onMessageReceived(m1);
+				gameHook.onMessageReceived(m1, inSocket);
 			break;
 		default:
 		}

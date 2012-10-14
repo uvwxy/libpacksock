@@ -17,7 +17,7 @@ public class Main {
 	public static IChatMessageHook cmh0 = new IChatMessageHook() {
 
 		@Override
-		public void onMessageReceived(ChatMessage msg) {
+		public void onMessageReceived(ChatMessage msg, PackSock inSockf) {
 			System.out.println("Client0: " + msg);
 		}
 	};
@@ -25,7 +25,7 @@ public class Main {
 	public static IChatMessageHook cmh1 = new IChatMessageHook() {
 
 		@Override
-		public void onMessageReceived(ChatMessage msg) {
+		public void onMessageReceived(ChatMessage msg, PackSock inSock) {
 			System.out.println("Client1: " + msg);
 		}
 	};
@@ -33,7 +33,7 @@ public class Main {
 	public static IChatMessageHook cmh2 = new IChatMessageHook() {
 
 		@Override
-		public void onMessageReceived(ChatMessage msg) {
+		public void onMessageReceived(ChatMessage msg, PackSock inSock) {
 			System.out.println("Client2: " + msg);
 		}
 	};

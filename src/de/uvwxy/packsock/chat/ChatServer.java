@@ -63,7 +63,7 @@ public class ChatServer implements IServerConnectedHook, IPacketHook {
 	}
 
 	@Override
-	public void onMessageReceived(Packet p) {
+	public void onMessageReceived(Packet p, PackSock inSocket) {
 		LinkedList<PackSock> remSockets = null;
 
 		for (PackSock s : sockets) {

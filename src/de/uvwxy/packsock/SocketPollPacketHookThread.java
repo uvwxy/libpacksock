@@ -27,7 +27,7 @@ public class SocketPollPacketHookThread implements Runnable {
 			}
 
 			if (temp != null && hook != null) {
-				hook.onMessageReceived(temp);
+				hook.onMessageReceived(temp, socket);
 			}
 		}
 	}

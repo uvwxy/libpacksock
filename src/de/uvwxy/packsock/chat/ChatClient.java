@@ -27,7 +27,7 @@ public class ChatClient implements IPacketHook {
 	}
 
 	@Override
-	public void onMessageReceived(Packet p) {
+	public void onMessageReceived(Packet p, PackSock inSocket) {
 		if (p == null) {
 			return;
 		}
@@ -36,7 +36,7 @@ public class ChatClient implements IPacketHook {
 		case PacketType.CHAT_MESSAGE:
 			ChatMessage m = new ChatMessage(p.getPayloadAsBytes());
 			if (msgHook != null)
-				msgHook.onMessageReceived(m);
+				msgHook.onMessageReceived(m, inSocket);
 			break;
 		default:
 		}
