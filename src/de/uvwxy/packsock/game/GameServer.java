@@ -16,14 +16,19 @@ public class GameServer extends ChatServer {
 	@Override
 	public void onMessageReceived(Packet p, PackSock inSocket) {
 		// Distribue Chat Messages as before
-		if (p.getType().getByteRepresentation() == PacketType.CHAT_MESSAGE) {
+		switch (p.getType().getByteRepresentation()) {
+		case PacketType.CHAT_MESSAGE:
 			super.onMessageReceived(p, inSocket);
-		} else if (p.getType().getByteRepresentation() == PacketType.CHAT_MESSAGE) {
+			break;
+		case PacketType.GAME_MESSAGE:
 			// additionally handle game messages
 			GameMessage m1 = new GameMessage(p.getPayloadAsBytes());
 			if (gameHook != null)
 				gameHook.onMessageReceived(m1, inSocket);
 		}
+	}
 
+	public void distributePacket(GameMessage m) {
+		distributePacket(new Packet(PacketType.GAME_MESSAGE, m.getObjectData()));
 	}
 }

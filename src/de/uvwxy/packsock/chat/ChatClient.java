@@ -11,7 +11,7 @@ import de.uvwxy.packsock.PacketType;
 public class ChatClient implements IPacketHook {
 	protected IChatMessageHook msgHook;
 
-	PackSock socket = null;
+	protected PackSock socket = null;
 	SocketPollPacketHookThread monitor = null;
 
 	public ChatClient(int port, String address, IChatMessageHook msgHook) {
@@ -43,7 +43,7 @@ public class ChatClient implements IPacketHook {
 	}
 
 	public void sendMessage(ChatMessage m) throws IOException {
-		Packet p = new Packet(PacketType.CHAT_MESSAGE, m.getByteArrayData());
+		Packet p = new Packet(PacketType.CHAT_MESSAGE, m.getObjectData());
 		socket.sendPacket(p);
 	}
 

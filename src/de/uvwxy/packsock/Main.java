@@ -91,7 +91,7 @@ public class Main {
 	private static void oldTests() throws Exception {
 		ChatMessage msg = new ChatMessage("Paul", "Hello World");
 
-		byte[] msgAsBytes = msg.getByteArrayData();
+		byte[] msgAsBytes = msg.getObjectData();
 
 		ChatMessage test = new ChatMessage(msgAsBytes);
 
@@ -166,7 +166,7 @@ public class Main {
 		receivedPacket = client2.blockingReadSocketForPacket();
 		log("String: \"" + receivedPacket.getPayloadAsString() + "\"");
 
-		Packet chatMessage = new Packet(PacketType.BINARY, msg.getByteArrayData());
+		Packet chatMessage = new Packet(PacketType.BINARY, msg.getObjectData());
 		server0.sendPacket(chatMessage);
 		receivedPacket = client0.blockingReadSocketForPacket();
 		ChatMessage receivedMessage = new ChatMessage(receivedPacket.getPayloadAsBytes());

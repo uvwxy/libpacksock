@@ -5,10 +5,12 @@ import java.net.SocketException;
 import java.util.LinkedList;
 
 import de.uvwxy.packsock.PackSock;
+import de.uvwxy.packsock.PacketType;
 import de.uvwxy.packsock.SocketPollPacketHookThread;
 import de.uvwxy.packsock.Packet;
 import de.uvwxy.packsock.IPacketHook;
 import de.uvwxy.packsock.IServerConnectedHook;
+import de.uvwxy.packsock.game.GameMessage;
 
 public class ChatServer implements IServerConnectedHook, IPacketHook {
 	int port;
@@ -64,6 +66,14 @@ public class ChatServer implements IServerConnectedHook, IPacketHook {
 
 	@Override
 	public void onMessageReceived(Packet p, PackSock inSocket) {
+		distributePacket(p);
+	}
+
+	public void distributePacket(ChatMessage c) {
+		distributePacket(new Packet(PacketType.CHAT_MESSAGE, c.getObjectData()));
+	}
+
+	public void distributePacket(Packet p) {
 		LinkedList<PackSock> remSockets = null;
 
 		for (PackSock s : sockets) {
@@ -81,7 +91,7 @@ public class ChatServer implements IServerConnectedHook, IPacketHook {
 		}
 
 		if (remSockets != null) {
-			for (PackSock s : remSockets){
+			for (PackSock s : remSockets) {
 				sockets.remove(s);
 			}
 		}

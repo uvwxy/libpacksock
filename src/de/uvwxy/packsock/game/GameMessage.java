@@ -10,62 +10,74 @@ public class GameMessage implements IPackSockMessage {
 
 	private byte id;
 
-	private byte[] game_data;
+	private byte[] gameObjData;
 
 	/**
 	 * Use this constructor to create the game message from a pack sock message
-	 * @param byte_array_data
+	 * 
+	 * @param objData
+	 *            can not be null?
 	 */
-	public GameMessage(byte[] byte_array_data) {
-		setByteArrayData(byte_array_data);
+	public GameMessage(byte[] objData) {
+		setObjData(objData);
 	}
 
 	/**
 	 * Use this constructor to create a new message with game data
+	 * 
 	 * @param id
 	 * @param game_data
+	 *            can not be null?
 	 */
 	public GameMessage(byte id, byte[] game_data) {
 		timestamp = System.currentTimeMillis();
-		this.game_data = game_data;
+		this.id = id;
+		this.gameObjData = game_data;
+	}
+
+	public byte[] getGameObjData() {
+		return gameObjData;
 	}
 
 	public byte getId() {
 		return id;
 	}
 
+	/**
+	 * Returns the "serialized" representation of this objects data
+	 */
 	@Override
-	public byte[] getByteArrayData() {
+	public byte[] getObjectData() {
 		byte[] bTimestamp = BytesConverter.long2bytes(timestamp);
-		byte[] bGameLen = BytesConverter.int2bytes(game_data.length);
+		byte[] bGameLen = BytesConverter.int2bytes(gameObjData != null ? gameObjData.length : 0);
 
-		byte[] bAll = new byte[bTimestamp.length + bGameLen.length + game_data.length + 1];
+		byte[] bAll = new byte[bTimestamp.length + bGameLen.length + gameObjData.length + 1];
 
 		System.arraycopy(bTimestamp, 0, bAll, 0, bTimestamp.length);
 
 		bAll[bTimestamp.length] = id;
 
 		System.arraycopy(bGameLen, 0, bAll, bTimestamp.length + 1, bGameLen.length);
-		System.arraycopy(game_data, 0, bAll, bGameLen.length + bTimestamp.length + 1, game_data.length);
+		System.arraycopy(gameObjData, 0, bAll, bGameLen.length + bTimestamp.length + 1, gameObjData.length);
 		return bAll;
 	}
 
 	@Override
-	public void setByteArrayData(byte[] data) {
+	public void setObjData(byte[] data) {
 		ByteBuffer bb = ByteBuffer.wrap(data);
 
 		long timestamp = bb.getLong();
 		this.id = bb.get();
 		int gameLen = bb.getInt();
-		game_data = new byte[gameLen];
+		gameObjData = new byte[gameLen];
 
-		System.arraycopy(data, bb.position(), game_data, 0, gameLen);
+		System.arraycopy(data, bb.position(), gameObjData, 0, gameLen);
 
 		this.timestamp = timestamp;
 	}
 
 	public String toString() {
-		return "" + timestamp + "(" + id + "): " + (game_data.length) + " bytes of game data";
+		return "" + timestamp + "(" + id + "): " + (gameObjData.length) + " bytes of game data";
 	}
 
 }

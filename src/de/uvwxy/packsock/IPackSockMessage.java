@@ -1,6 +1,6 @@
 package de.uvwxy.packsock;
 
 public interface IPackSockMessage {
-	public byte[] getByteArrayData();
-	public void setByteArrayData(byte[] data);
+	public byte[] getObjectData();
+	public void setObjData(byte[] data);
 }

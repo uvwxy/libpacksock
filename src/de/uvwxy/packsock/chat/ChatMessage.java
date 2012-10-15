@@ -21,7 +21,7 @@ public class ChatMessage implements IPackSockMessage {
 	}
 
 	public ChatMessage(byte[] data) {
-		setByteArrayData(data);
+		setObjData(data);
 	}
 	
 	public String getSender(){
@@ -33,7 +33,7 @@ public class ChatMessage implements IPackSockMessage {
 	}
 
 	@Override
-	public byte[] getByteArrayData() {
+	public byte[] getObjectData() {
 		byte[] bTimestamp = BytesConverter.long2bytes(timestamp);
 
 		byte[] bSender = BytesConverter.string2bytes(sender);
@@ -57,7 +57,7 @@ public class ChatMessage implements IPackSockMessage {
 	}
 
 	@Override
-	public void setByteArrayData(byte[] data) {
+	public void setObjData(byte[] data) {
 		ByteBuffer bb = ByteBuffer.wrap(data);
 
 		long timestamp = bb.getLong();

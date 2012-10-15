@@ -1,5 +1,8 @@
 package de.uvwxy.packsock.game;
 
+import java.io.IOException;
+import java.net.SocketException;
+
 import de.uvwxy.packsock.PackSock;
 import de.uvwxy.packsock.Packet;
 import de.uvwxy.packsock.PacketType;
@@ -36,7 +39,8 @@ public class GameClient extends ChatClient {
 		}
 	}
 
-	public void loginOnServer() {
-
+	public void sendGameMessage(GameMessage m) throws SocketException, IOException {
+		Packet p = new Packet(PacketType.GAME_MESSAGE, m.getObjectData());
+		socket.sendPacket(p);
 	}
 }
